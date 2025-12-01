@@ -30,7 +30,7 @@ struct TintListView: View {
             .navigationDestination(for: Tint.self) { tint in
                 TintDetailView(tint: tint)
             }
-            .navigationTitle("Tint")
+            .navigationTitle("Tint 💄")
             .task {
                 await viewModel.loadTints()
             }

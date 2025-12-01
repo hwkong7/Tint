@@ -6,17 +6,32 @@ struct TintView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 28) {
                     
-                    // MARK: ⭐️ 인기 틴트 Top 3 (단순 최신순)
-                    popularSection
-                    
-                    // MARK: ⭐️ 평점 높은 틴트 Top 3
-                    ratingSection
+                    //popularSection
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 28) {
+                            
+                            popularSection
+
+                            // 💄 예쁜 구분선
+                            HStack {
+                                Rectangle().fill(Color.gray.opacity(0.2)).frame(height: 1)
+                                Text("🤍")
+                                Rectangle().fill(Color.gray.opacity(0.2)).frame(height: 1)
+                            }
+                            .padding(.vertical, 8)
+                            
+                            ratingSection
+                        }
+                        .padding()
+                    }
+
+                    //ratingSection
                 }
                 .padding()
             }
-            .navigationTitle("Tint 홈")
+            .navigationTitle("Tint 랭킹차트")
             .task {
                 await viewModel.loadTints()
             }
@@ -24,58 +39,60 @@ struct TintView: View {
     }
 }
 
-// MARK: - 섹션 UI 정리
 extension TintView {
     
-    // 인기순: 최신순 정렬한 Top 3
+    // MARK: 인기 Top 3
     private var popularSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("💄 인기 틴트 Top 3")
-                .font(.title3)
+            Text("❤ 인기 Top 3")
+                .font(.title2)
                 .bold()
             
-            let popular = Array(viewModel.tints.prefix(3))
-            
-            ForEach(popular) { tint in
-                tintRow(tint)
+            ForEach(Array(viewModel.tints.prefix(3))) { tint in
+                card(tint)
             }
         }
     }
     
-    // 평점순: rating 높은 순 Top 3
+    
+    // MARK: 평점 높은 Top 3
     private var ratingSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("⭐️ 평점 높은 Top 3")
-                .font(.title3)
+            Text("🌟 평점 Top 3")
+                .font(.title2)
                 .bold()
             
-            let topRated = viewModel.tints.sorted { $0.rating > $1.rating }.prefix(3)
-            
-            ForEach(topRated) { tint in
-                tintRow(tint)
+            ForEach(Array(viewModel.tints.sorted { $0.rating > $1.rating }.prefix(3))) { tint in
+                card(tint)
             }
         }
     }
     
-    // 각각의 row UI
-    private func tintRow(_ tint: Tint) -> some View {
+    // MARK: 카드 UI
+    private func card(_ tint: Tint) -> some View {
         NavigationLink(value: tint) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(tint.productName)
-                        .font(.headline)
-                    Text("\(tint.brand) · \(tint.colorFamily ?? "-")")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(tint.productName)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                
+                Text("\(tint.brand) · \(tint.colorFamily ?? "-")")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                
+                HStack {
+                    Text("⭐️ \(tint.rating)")
+                        .font(.body)
+                        .foregroundColor(.pink)
+                    Spacer()
                 }
-                
-                Spacer()
-                
-                Text("\(tint.rating)")
-                    .font(.title3)
-                    .foregroundColor(.pink)
             }
-            .padding(.vertical, 4)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .gray.opacity(0.2), radius: 6, x: 0, y: 4)
+            )
         }
     }
 }

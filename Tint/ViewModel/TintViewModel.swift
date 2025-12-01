@@ -1,6 +1,5 @@
 import SwiftUI
 
-@MainActor
 @Observable
 final class TintViewModel {
     private let repository: TintRepository
@@ -15,7 +14,11 @@ final class TintViewModel {
     var path = NavigationPath()
 
     func loadTints() async {
-        _tints = try! await repository.fetchTints()
+        do {
+            _tints = try await repository.fetchTints()
+        } catch {
+            print("error: \(error)")
+        }
     }
 
     func addTint(_ tint: Tint) async {

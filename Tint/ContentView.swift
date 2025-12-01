@@ -9,10 +9,10 @@ struct ContentView: View {
                     Text("Tint")
                 }
 
-            TintView()       // 소개 화면
+            TintView()       // 랭킹 화면
                 .tabItem {
-                    Image(systemName: "heart.fill")
-                    Text("About")
+                    Image(systemName: "chart.bar.fill")
+                    Text("Rank")
                 }
         }
     }
