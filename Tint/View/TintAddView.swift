@@ -18,9 +18,34 @@ struct TintAddView: View {
                     TextField("브랜드", text: $brand)
                 }
                 
-                Section("색상 정보") {
-                    TextField("컬러 계열", text: $colorFamily)
+                Section(header: Text("컬러 선택")) {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 14) {
+                            ForEach(tintColors.keys.sorted(), id: \.self) { key in
+                                let color = tintColors[key]!
+
+                                ZStack {
+                                    Circle()
+                                        .fill(color)
+                                        .frame(width: 36, height: 36)
+                                        .shadow(radius: 2)
+
+                                    // 선택된 색상은 테두리 표시
+                                    if colorFamily == key {
+                                        Circle()
+                                            .stroke(Color.black.opacity(0.8), lineWidth: 2)
+                                            .frame(width: 42, height: 42)
+                                    }
+                                }
+                                .onTapGesture {
+                                    colorFamily = key
+                                }
+                            }
+                        }
+                        .padding(.vertical, 8)
+                    }
                 }
+
                 
                 Section("평점 *") {
                     Picker("평점", selection: $rating) {
