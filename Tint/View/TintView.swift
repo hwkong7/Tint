@@ -58,7 +58,7 @@ extension TintView {
     // MARK: 평점 높은 Top 3
     private var ratingSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("🌟 평점 Top 3")
+            Text("🏆 평점 Top 3")
                 .font(.title2)
                 .bold()
             
