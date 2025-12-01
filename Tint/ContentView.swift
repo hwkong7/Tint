@@ -1,21 +1,20 @@
-//
-//  ContentView.swift
-//  Tint
-//
-//  Created by student on 12/1/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            TintListView()   // 목록
+                .tabItem {
+                    Image(systemName: "paintpalette")
+                    Text("Tint")
+                }
+
+            TintView()       // 소개 화면
+                .tabItem {
+                    Image(systemName: "heart.fill")
+                    Text("About")
+                }
         }
-        .padding()
     }
 }
 
